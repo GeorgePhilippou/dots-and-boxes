@@ -1,0 +1,9 @@
+{
+  "name": "Dots & Boxes for Two",
+  "short_name": "Dots & Boxes",
+  "description": "A Pencil-friendly game of Dots and Boxes for two players.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4efe5",
+  "theme_color": "#f4efe5"
+}

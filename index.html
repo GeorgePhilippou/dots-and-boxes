@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#f4efe5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dots & Boxes">
+  <title>Dots & Boxes</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section id="welcome" class="welcome card" aria-labelledby="welcome-title">
+      <p class="eyebrow">A little game for two</p>
+      <h1 id="welcome-title">Dots <span>&</span> Boxes</h1>
+      <p class="intro">Take turns joining two dots. Close a box, keep the turn. Most boxes wins.</p>
+
+      <form id="setup-form">
+        <div class="players">
+          <label class="player-field player-one">
+            <span>Player one</span>
+            <input id="player-one" maxlength="14" value="George" autocomplete="off">
+          </label>
+          <span class="versus" aria-hidden="true">vs</span>
+          <label class="player-field player-two">
+            <span>Player two</span>
+            <input id="player-two" maxlength="14" value="My love" autocomplete="off">
+          </label>
+        </div>
+
+        <label class="size-field" for="board-size">
+          <span>Board size</span>
+          <select id="board-size">
+            <option value="4">Quick · 3 × 3 boxes</option>
+            <option value="5" selected>Classic · 4 × 4 boxes</option>
+            <option value="6">Long · 5 × 5 boxes</option>
+          </select>
+        </label>
+
+        <button class="primary-button" type="submit">Start playing <span>→</span></button>
+      </form>
+      <p class="pencil-note"><span class="pencil-icon">✎</span> Designed for Apple Pencil, but fingers work too.</p>
+    </section>
+
+    <section id="game" class="game-screen" hidden aria-label="Dots and Boxes game">
+      <header class="game-header">
+        <button id="home-button" class="icon-button" aria-label="Return to setup">←</button>
+        <div class="turn-copy">
+          <p id="turn-label">Your turn</p>
+          <h2 id="turn-name">George</h2>
+        </div>
+        <button id="restart-button" class="text-button">Restart</button>
+      </header>
+
+      <div class="scoreboard card">
+        <div id="score-one-card" class="score-player player-one active">
+          <span id="score-one-name">George</span>
+          <strong id="score-one">0</strong>
+        </div>
+        <div class="score-middle"><span>boxes</span><i></i></div>
+        <div id="score-two-card" class="score-player player-two">
+          <span id="score-two-name">My love</span>
+          <strong id="score-two">0</strong>
+        </div>
+      </div>
+
+      <div class="board-wrap">
+        <svg id="board" class="board" viewBox="0 0 600 600" role="application" aria-label="Game board"></svg>
+      </div>
+
+      <p id="game-hint" class="game-hint">Draw or tap between any two neighbouring dots</p>
+    </section>
+
+    <section id="result" class="result-overlay" hidden aria-live="polite">
+      <div class="result-card card">
+        <p class="eyebrow">Game complete</p>
+        <div class="winner-mark">✦</div>
+        <h2 id="winner-title">George wins!</h2>
+        <p id="winner-score">9 boxes to 7</p>
+        <div class="result-actions">
+          <button id="rematch-button" class="primary-button">Play again</button>
+          <button id="result-home-button" class="text-button">Change players</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
