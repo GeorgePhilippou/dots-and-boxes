@@ -27,5 +27,10 @@ Then open `http://localhost:8765`.
 - Responsive portrait and landscape iPad layouts
 - Local saved game and offline app shell
 - Home Screen web-app metadata
+- Install icons and offline caching for iPad Home Screen use
 
 The next milestone is remote two-iPad rooms using Firebase Realtime Database and anonymous authentication.
+
+## Add to an iPad Home Screen
+
+After the site is published, open its GitHub Pages URL in Safari. Tap **Share**, choose **Add to Home Screen**, then tap **Add**. The installed app opens without Safari's normal browser controls and keeps its app shell available offline.
