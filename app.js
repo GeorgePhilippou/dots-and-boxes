@@ -1,6 +1,6 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const STORAGE_KEY = "dots-boxes-game-v2";
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "1.1.1";
 
 const elements = {
   welcome: document.querySelector("#welcome"),
@@ -84,7 +84,7 @@ function makeRoomCode() {
 }
 
 function normalizeRoomCode(value) {
-  return value.toUpperCase().replace(/[^A-Z2-9]/g, "").slice(0, 6);
+  return value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
 }
 
 function edgeId(a, b) {
@@ -322,7 +322,7 @@ function completedBoxesFor(game, id) {
   }).map(({ r, c }) => `${r},${c}`);
 }
 
-async function createOnlineRoom(playerName, size) {
+async function createOnlineRoom(players, size) {
   const firebase = await loadFirebase();
   let code;
   let roomRef;
@@ -331,7 +331,7 @@ async function createOnlineRoom(playerName, size) {
     roomRef = firebase.databaseApi.ref(firebase.db, `rooms/${code}`);
     if (!(await firebase.databaseApi.get(roomRef)).exists()) break;
   }
-  const game = newGame([playerName, "Waiting…"], size, "online");
+  const game = newGame(players, size, "online");
   await firebase.databaseApi.set(roomRef, {
     hostUid: firebase.auth.currentUser.uid,
     status: "waiting",
@@ -341,9 +341,12 @@ async function createOnlineRoom(playerName, size) {
   beginOnlineSession(firebase, roomRef, code, 0, "waiting", game);
 }
 
-async function joinOnlineRoom(playerName, rawCode) {
+async function joinOnlineRoom(rawCode) {
   const code = normalizeRoomCode(rawCode);
   if (code.length !== 6) throw new Error("Enter the six-character room code.");
+  if (!/^[A-HJ-NP-Z2-9]{6}$/.test(code)) {
+    throw new Error("Check the code shown on the other iPad. Room codes do not use 0, 1, I, or O.");
+  }
   const firebase = await loadFirebase();
   const roomRef = firebase.databaseApi.ref(firebase.db, `rooms/${code}`);
   const snapshot = await firebase.databaseApi.get(roomRef);
@@ -355,10 +358,9 @@ async function joinOnlineRoom(playerName, rawCode) {
     firebase.auth.currentUser.uid
   );
   await firebase.databaseApi.update(roomRef, {
-    status: "playing",
-    "state/players/1": playerName
+    status: "playing"
   });
-  const joinedState = normalizeGame({ ...room.state, players: [room.state.players[0], playerName] });
+  const joinedState = normalizeGame(room.state);
   beginOnlineSession(firebase, roomRef, code, 1, "playing", joinedState);
 }
 
@@ -493,8 +495,8 @@ elements.form.addEventListener("submit", async (event) => {
   const players = [elements.playerOne.value.trim() || "Player one", elements.playerTwo.value.trim() || "Player two"];
   try {
     if (selectedMode === "online") {
-      if (selectedOnlineAction === "create") await createOnlineRoom(players[0], Number(elements.boardSize.value));
-      else await joinOnlineRoom(players[0], elements.roomCode.value);
+      if (selectedOnlineAction === "create") await createOnlineRoom(players, Number(elements.boardSize.value));
+      else await joinOnlineRoom(elements.roomCode.value);
     } else {
       state = newGame(players, Number(elements.boardSize.value), selectedMode);
       save();
@@ -515,25 +517,32 @@ elements.modeButtons.forEach((button) => button.addEventListener("click", () => 
   elements.modeButtons.forEach((item) => item.classList.toggle("active", item === button));
   const computer = selectedMode === "computer";
   const online = selectedMode === "online";
-  elements.playerTwo.closest("label").hidden = online;
-  document.querySelector(".versus").hidden = online;
-  elements.onlineOptions.hidden = !online;
-  document.querySelector(".size-field").hidden = online && selectedOnlineAction === "join";
-  elements.playerOneLabel.textContent = online ? "Your name" : "Player one";
   elements.playerTwo.disabled = computer;
   elements.playerTwo.value = computer ? "Computer" : (elements.playerTwo.value === "Computer" ? "Megan" : elements.playerTwo.value);
   elements.playerTwoLabel.textContent = computer ? "Opponent" : "Player two";
-  elements.startButton.innerHTML = online ? `${selectedOnlineAction === "create" ? "Create room" : "Join room"} <span>→</span>` : "Start playing <span>→</span>";
+  updateSetupFields();
 }));
 
 elements.onlineButtons.forEach((button) => button.addEventListener("click", () => {
   selectedOnlineAction = button.dataset.onlineAction;
   elements.onlineButtons.forEach((item) => item.classList.toggle("active", item === button));
-  const joining = selectedOnlineAction === "join";
+  updateSetupFields();
+}));
+
+function updateSetupFields() {
+  const online = selectedMode === "online";
+  const joining = online && selectedOnlineAction === "join";
+  document.querySelector(".players").hidden = joining;
+  elements.playerTwo.closest("label").hidden = false;
+  document.querySelector(".versus").hidden = false;
+  elements.onlineOptions.hidden = !online;
   elements.roomCodeField.hidden = !joining;
   document.querySelector(".size-field").hidden = joining;
-  elements.startButton.innerHTML = `${joining ? "Join room" : "Create room"} <span>→</span>`;
-}));
+  elements.playerOneLabel.textContent = "Player one";
+  elements.startButton.innerHTML = online
+    ? `${joining ? "Join room" : "Create room"} <span>→</span>`
+    : "Start playing <span>→</span>";
+}
 
 elements.roomCode.addEventListener("input", () => {
   elements.roomCode.value = normalizeRoomCode(elements.roomCode.value);

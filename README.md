@@ -1,6 +1,6 @@
 # Dots & Boxes
 
-Current release: **v1.1.0**
+Current release: **v1.1.1**
 
 A Pencil-friendly Dots and Boxes game for iPad, hosted on GitHub Pages with secured Firebase rooms for online play.
 
@@ -38,7 +38,7 @@ Online rooms use Firebase Anonymous Authentication and Realtime Database Securit
 
 ## Online room setup
 
-Choose **Two iPads**. One player selects **Create a room** and shares the displayed six-character code. The second player selects **Join a room**, enters that code, and starts playing. A room link containing `?room=CODE` opens directly in join mode.
+Choose **Two iPads**. The room creator sets both player names, selects **Create a room**, and shares the displayed six-character code. The second player selects **Join a room** and enters that code; both names are loaded automatically from the room. A room link containing `?room=CODE` opens directly in join mode. Room codes omit visually ambiguous characters such as `0`, `1`, `I`, and `O`.
 
 ## Add to an iPad Home Screen
 
