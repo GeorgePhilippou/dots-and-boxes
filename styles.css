@@ -32,11 +32,14 @@ button, input, select { font: inherit; }
 button { color: inherit; }
 
 .app-shell {
+  position: relative;
   min-height: 100dvh;
   display: grid;
   place-items: center;
   padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
 }
+
+.version-label { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 2; margin: 0; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .08em; opacity: .62; text-transform: uppercase; pointer-events: none; }
 
 .card {
   background: rgba(255, 253, 248, .82);

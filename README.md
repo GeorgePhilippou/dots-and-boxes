@@ -1,5 +1,7 @@
 # Dots & Boxes
 
+Current release: **v1.1.0**
+
 A Pencil-friendly Dots and Boxes game for iPad, hosted on GitHub Pages with secured Firebase rooms for online play.
 
 ## Run locally

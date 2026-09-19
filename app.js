@@ -1,5 +1,6 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const STORAGE_KEY = "dots-boxes-game-v2";
+const APP_VERSION = "1.1.0";
 
 const elements = {
   welcome: document.querySelector("#welcome"),
@@ -38,6 +39,8 @@ let selectedOnlineAction = "create";
 let computerTimer = null;
 let firebasePromise = null;
 let onlineSession = null;
+
+document.querySelector("#app-version").textContent = APP_VERSION;
 
 const FIREBASE_CONFIG = {
   projectId: "dots-and-boxes-george",
