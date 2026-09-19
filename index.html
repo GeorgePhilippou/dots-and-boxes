@@ -16,20 +16,40 @@
 <body>
   <main class="app-shell">
     <section id="welcome" class="welcome card" aria-labelledby="welcome-title">
-      <p class="eyebrow">A little game for two</p>
+      <p class="eyebrow">A classic game of strategy</p>
       <h1 id="welcome-title">Dots <span>&</span> Boxes</h1>
       <p class="intro">Take turns joining two dots. Close a box, keep the turn. Most boxes wins.</p>
 
       <form id="setup-form">
+        <div class="mode-field">
+          <span>Game mode</span>
+          <div class="mode-picker" role="group" aria-label="Game mode">
+            <button class="mode-button active" type="button" data-mode="local">Two players</button>
+            <button class="mode-button" type="button" data-mode="computer">Single player</button>
+            <button class="mode-button" type="button" data-mode="online">Two iPads</button>
+          </div>
+        </div>
+
         <div class="players">
           <label class="player-field player-one">
-            <span>Player one</span>
+            <span id="player-one-label">Player one</span>
             <input id="player-one" maxlength="14" value="George" autocomplete="off">
           </label>
           <span class="versus" aria-hidden="true">vs</span>
           <label class="player-field player-two">
-            <span>Player two</span>
-            <input id="player-two" maxlength="14" value="My love" autocomplete="off">
+            <span id="player-two-label">Player two</span>
+            <input id="player-two" maxlength="14" value="Megan" autocomplete="off">
+          </label>
+        </div>
+
+        <div id="online-options" class="online-options" hidden>
+          <div class="online-picker" role="group" aria-label="Online game action">
+            <button class="online-button active" type="button" data-online-action="create">Create a room</button>
+            <button class="online-button" type="button" data-online-action="join">Join a room</button>
+          </div>
+          <label id="room-code-field" class="room-code-field" for="room-code" hidden>
+            <span>Room code</span>
+            <input id="room-code" maxlength="6" inputmode="text" autocomplete="off" autocapitalize="characters" placeholder="ABC123">
           </label>
         </div>
 
@@ -39,10 +59,13 @@
             <option value="4">Quick · 3 × 3 boxes</option>
             <option value="5" selected>Classic · 4 × 4 boxes</option>
             <option value="6">Long · 5 × 5 boxes</option>
+            <option value="7">Large · 6 × 6 boxes</option>
+            <option value="8">Larger · 7 × 7 boxes</option>
+            <option value="10">Epic · 9 × 9 boxes</option>
           </select>
         </label>
 
-        <button class="primary-button" type="submit">Start playing <span>→</span></button>
+        <button id="start-button" class="primary-button" type="submit">Start playing <span>→</span></button>
       </form>
       <p class="pencil-note"><span class="pencil-icon">✎</span> Designed for Apple Pencil, but fingers work too.</p>
     </section>
@@ -64,7 +87,7 @@
         </div>
         <div class="score-middle"><span>boxes</span><i></i></div>
         <div id="score-two-card" class="score-player player-two">
-          <span id="score-two-name">My love</span>
+          <span id="score-two-name">Megan</span>
           <strong id="score-two">0</strong>
         </div>
       </div>

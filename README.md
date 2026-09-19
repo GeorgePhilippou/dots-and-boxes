@@ -1,6 +1,6 @@
 # Dots & Boxes
 
-A Pencil-friendly Dots and Boxes prototype for two players. This first version is a local pass-and-play game and is ready for static hosting on GitHub Pages.
+A Pencil-friendly Dots and Boxes game for iPad, hosted on GitHub Pages with secured Firebase rooms for online play.
 
 ## Run locally
 
@@ -22,14 +22,21 @@ Then open `http://localhost:8765`.
 ## Prototype scope
 
 - Pencil, finger, and mouse input using Pointer Events
-- Three board sizes
+- Six board sizes, from 3 × 3 to 9 × 9 boxes
 - Complete Dots and Boxes scoring and extra-turn rules
 - Responsive portrait and landscape iPad layouts
 - Local saved game and offline app shell
 - Home Screen web-app metadata
 - Install icons and offline caching for iPad Home Screen use
+- Local two-player mode
+- Single-player mode with a computer opponent
+- Two-iPad rooms with six-character join codes
 
-The next milestone is remote two-iPad rooms using Firebase Realtime Database and anonymous authentication.
+Online rooms use Firebase Anonymous Authentication and Realtime Database Security Rules. Players do not need accounts; each device receives a temporary anonymous identity, and only the room's two participants can update an active game.
+
+## Online room setup
+
+Choose **Two iPads**. One player selects **Create a room** and shares the displayed six-character code. The second player selects **Join a room**, enters that code, and starts playing. A room link containing `?room=CODE` opens directly in join mode.
 
 ## Add to an iPad Home Screen
 
